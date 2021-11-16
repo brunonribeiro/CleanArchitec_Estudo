@@ -39,7 +39,7 @@ namespace RabbitMq
             };
         }
 
-        public void Post(CompanySaveCommand company) 
+        public void Post(CompanyDto company) 
         {
             using (var connection = _factory.CreateConnection())
             {
@@ -106,7 +106,7 @@ namespace RabbitMq
             _chanel.BasicAck(eventArgs.DeliveryTag, false);
         }
 
-        private static string GenerateLog(CompanySaveCommand company, string description)
+        private static string GenerateLog(CompanyDto company, string description)
         {
             return $"{description} ({DateTime.Now}): {company?.Name} - {company?.Cnpj} {(!string.IsNullOrWhiteSpace(company?.Email) ? "- " + company?.Email : "")} - {company?.FoundationDate}";
         }
