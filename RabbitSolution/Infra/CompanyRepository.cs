@@ -1,6 +1,8 @@
 ﻿using Application.Interfaces.Repositories;
 using Domain.Entities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,29 +11,27 @@ namespace Infra
 {
     public class CompanyRepository : ICompanyRepository
     {
+        private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
+        private readonly RedisConfiguration _config;
+        private readonly RedisClient _redisClient;
 
-        public CompanyRepository(ILogger<CompanyRepository> logger)
+        public CompanyRepository(IConfiguration configuration, ILogger<CompanyRepository> logger)
         {
+            _configuration = configuration;
             _logger = logger;
-        }
 
-        public List<Company> GetList()
-        {
-            return new List<Company>
+            _config = new RedisConfiguration
             {
-                new Company(1, "Empresa XX1", "40968837000143","", DateTime.Today.AddDays(-3000)),
-                new Company(2, "Empresa XX2", "24886356000132","", DateTime.Today.AddDays(-2500)),
-                new Company(3, "Empresa XX3", "84683917000128","", DateTime.Today.AddDays(-2000)),
-                new Company(4, "Empresa XX4", "12285601000177","", DateTime.Today.AddDays(-1500)),
-                new Company(5, "Empresa XX5", "65780064000106","", DateTime.Today.AddDays(-1000)),
-                new Company(6, "Empresa XX6", "52847652000160","", DateTime.Today.AddDays(-0500))
+                Host = _configuration.GetSection("Redis:Host").Value,
             };
+
+            _redisClient = new RedisClient(_config.Host);
         }
 
-        public Company GetById(int id)
+        public Company GetByCnpj(string cnpj)
         {
-            var company = GetList().FirstOrDefault(x => x.Id == id);
+            var company = _redisClient.Get<Company>(cnpj);
             _logger.LogInformation(GenerateLog(company, "Read Database"));
 
             return company;
@@ -39,12 +39,7 @@ namespace Infra
 
         public void Save(Company company)
         {
-            if (company.Id == 0)
-            {
-                var lastId = GetList().LastOrDefault()?.Id ?? 0;
-                company.AssignId(++lastId);
-            }
-
+            _redisClient.Set(company.Cnpj, company);
             _logger.LogInformation(GenerateLog(company, "Save Database"));
         }
 
