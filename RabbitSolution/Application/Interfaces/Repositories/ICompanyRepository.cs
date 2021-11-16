@@ -4,7 +4,7 @@ namespace Application.Interfaces.Repositories
 {
     public interface ICompanyRepository
     {
-        Company GetById(int id);
+        Company GetByCnpj(string cnpj);
         void Save(Company company);       
     }
 }

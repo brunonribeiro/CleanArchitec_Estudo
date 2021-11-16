@@ -27,11 +27,6 @@ namespace Domain.Entities
         public string Cnpj { get; private set; }
         public DateTime FoundationDate { get; private set; }
 
-        public void AssignId(int id)
-        {
-            Id = id;
-        }
-
         public void UpdateName(string name)
         {
             if (!string.IsNullOrWhiteSpace(name))

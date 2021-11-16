@@ -1,11 +1,10 @@
-﻿using Application.UseCases.CompanySaveUseCase;
-using Domain.Entities;
+﻿using Application.DTO;
 
 namespace Application.Interfaces.Services
 {
     public interface IRabbitService
     {
-        void Post(CompanySaveCommand company);
+        void Post(CompanyDto company);
         void Read();
     }
 }

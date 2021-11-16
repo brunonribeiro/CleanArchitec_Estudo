@@ -20,7 +20,7 @@ namespace Application.UseCases.CompanyUpdateUseCase
         {
             try
             {
-                var company = _companyRepository.GetById(request.Id);
+                var company = _companyRepository.GetByCnpj(request.Cnpj);
 
                 if (company == null)
                     return new Response().AddError("Empresa não encontrada");

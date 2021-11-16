@@ -8,9 +8,9 @@ namespace Application.UseCases.CompanyUpdateUseCase
     {
         public CompanyUpdateValidator()
         {
-            RuleFor(a => a.Id)
+            RuleFor(a => a.Cnpj)
               .NotEmpty()
-              .GreaterThan(0);
+              .IsValidCNPJ();
 
             RuleFor(a => a.Name)
                .MaximumLength(Constantes.QuantidadeDeCaracteres100);
