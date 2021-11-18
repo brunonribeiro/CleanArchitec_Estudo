@@ -39,7 +39,7 @@ namespace Infra
 
         public void Save(Company company)
         {
-            _redisClient.Set(company.Cnpj, company);
+            _redisClient.Set(company.Cnpj, company, new TimeSpan(0,30,0));
             _logger.LogInformation(GenerateLog(company, "Save Database"));
         }
 

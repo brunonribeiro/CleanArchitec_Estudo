@@ -24,7 +24,7 @@ namespace WebApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHostedService<RabbitConsumer>();
-            Bootstrapper.Register(services);
+            services.Register();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

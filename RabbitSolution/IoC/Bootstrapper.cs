@@ -14,7 +14,7 @@ namespace IoC
 {
     public static class Bootstrapper
     {
-        public static void Register(IServiceCollection services)
+        public static void Register(this IServiceCollection services)
         {
             services.AddSingleton<ICompanyRepository, CompanyRepository>();
             services.AddSingleton<ICompanyReceiverUseCase, CompanyReceiverUseCase>();
