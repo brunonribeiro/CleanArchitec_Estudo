@@ -1,4 +1,5 @@
 ﻿using Application.Core;
+using Application.Core.Validators;
 using FluentValidation;
 using System;
 
@@ -21,12 +22,7 @@ namespace Application.UseCases.CompanySaveUseCase
 
             RuleFor(a => a.FoundationDate)
                 .NotEmpty()
-                .Must(DateValid).WithMessage(Constantes.MsgDataInvalida);
-        }
-
-        private static bool DateValid(string foundationDate)
-        {
-            return foundationDate.ToDate() < DateTime.Today && foundationDate.ToDate() > DateTime.MinValue;
+                .Must(DateValidator.Valid).WithMessage(Constantes.MsgDataInvalida);
         }
     }
 }

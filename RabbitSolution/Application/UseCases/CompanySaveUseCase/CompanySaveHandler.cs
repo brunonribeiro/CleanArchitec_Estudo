@@ -3,6 +3,7 @@ using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Domain.Entities;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,20 +30,19 @@ namespace Application.UseCases.CompanySaveUseCase
                 var company = new Company(
                    request.Name,
                    request.Cnpj,
+                   request.Email,
                    request.FoundationDate.ToDate().Value
                 );
-
-                company.UpdateEmail(request.Email);
 
                 //Salva no banco de dados
                 _companyRepository.Save(company);
             }
             catch
             {
-                throw;
+                throw new ArgumentNullException();
             }
 
-            return new Response("Empresa cadastrada com sucesso");
+            return new Response(Constantes.EmpresaCadastrada);
         }
     }
 }

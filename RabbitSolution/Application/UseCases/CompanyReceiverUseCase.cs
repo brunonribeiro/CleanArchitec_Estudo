@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Application.Interfaces.UseCases;
+using System;
 
 namespace Application.UseCases
 {
@@ -21,7 +22,7 @@ namespace Application.UseCases
             }
             catch
             {
-                throw;
+                throw new ArgumentNullException();
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Application.Core;
+using Application.Core.Validators;
 using FluentValidation;
 using System;
 
@@ -13,18 +14,14 @@ namespace Application.UseCases.CompanyUpdateUseCase
               .IsValidCNPJ();
 
             RuleFor(a => a.Name)
+               .NotEmpty()
                .MaximumLength(Constantes.QuantidadeDeCaracteres100);
 
             RuleFor(a => a.Email)
                 .EmailAddress();
 
             RuleFor(a => a.FoundationDate)
-                .Must(DateValid).WithMessage(Constantes.MsgDataInvalida);
-        }
-
-        private static bool DateValid(string foundationDate)
-        {
-            return string.IsNullOrEmpty(foundationDate) || (foundationDate.ToDate() < DateTime.Today && foundationDate.ToDate() > DateTime.MinValue);
+                .Must(DateValidator.Valid).WithMessage(Constantes.MsgDataInvalida);
         }
     }
 }
