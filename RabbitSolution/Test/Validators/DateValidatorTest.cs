@@ -17,7 +17,7 @@ namespace Test.Validators
         [Fact]
         public void ShouldReturnValid()
         {
-            var validDate = _faker.Date.Past().ToShortDateString();
+            var validDate = _faker.Date.Past(30).ToShortDateString();
 
            var result = DateValidator.Valid(validDate);
 
