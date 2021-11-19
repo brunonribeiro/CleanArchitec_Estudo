@@ -11,7 +11,7 @@ namespace Application.UseCases.CompanySaveUseCase
         {
             RuleFor(a => a.Name)
                .NotEmpty()
-               .MaximumLength(Constantes.QuantidadeDeCaracteres100);
+               .MaximumLength(Constants.NumberOfCharacters100);
 
             RuleFor(a => a.Email)
                 .EmailAddress();
@@ -22,7 +22,7 @@ namespace Application.UseCases.CompanySaveUseCase
 
             RuleFor(a => a.FoundationDate)
                 .NotEmpty()
-                .Must(DateValidator.Valid).WithMessage(Constantes.MsgDataInvalida);
+                .Must(DateValidator.Valid).WithMessage(Constants.MsgInvalidDate);
         }
     }
 }

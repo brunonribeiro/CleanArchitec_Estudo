@@ -16,22 +16,19 @@ namespace Test.UseCases.CompanyUpdateUseCase
 {
     public class CompanyUpdateHandlerTest
     {
-        private Faker _faker;
-        private Fixture _builder;
-        private CompanyUpdateCommand _companyUpdateCommand;
-        private Company _companySave;
-        private CancellationToken _cancellationToken;
+        private readonly Faker _faker;
+        private readonly Fixture _builder;
+        private readonly Company _companySave;
+        private readonly CancellationToken _cancellationToken;
         private readonly Mock<ICompanyRepository> _companyRepositoryMock;
         private readonly CompanyUpdateHandler _companyUpdateHandler;
+        private CompanyUpdateCommand _companyUpdateCommand;
 
         public CompanyUpdateHandlerTest()
         {
-            _companyRepositoryMock = new Mock<ICompanyRepository>();
+            _companyRepositoryMock = new Mock<ICompanyRepository>(MockBehavior.Strict);
             _companyUpdateHandler = new CompanyUpdateHandler(_companyRepositoryMock.Object);
-        }
 
-        private void Setup()
-        {
             _builder = new Fixture();
             _faker = new Faker("pt_BR");
 
@@ -52,31 +49,21 @@ namespace Test.UseCases.CompanyUpdateUseCase
             _cancellationToken = _builder.Create<CancellationToken>();
         }
 
+
         [Fact]
         public void ShouldUpdateCompany()
         {
-            Setup();
+            _companyRepositoryMock.Setup(x => x.Save(_companySave));
 
             var response = _companyUpdateHandler.Handle(_companyUpdateCommand, _cancellationToken).Result;
 
-            response.Result.Should().Be(Constantes.EmpresaAlterada);
-        }
-
-        [Fact]
-        public void ShouldCallRepository()
-        {
-            Setup();
-
-            var response = _companyUpdateHandler.Handle(_companyUpdateCommand, _cancellationToken).Result;
-
-            _companyRepositoryMock.Verify(x => x.Save(It.IsAny<Company>()));
+            _companyRepositoryMock.VerifyAll();
+            response.Result.Should().Be(Constants.MsgCompanyChanged);
         }
 
         [Fact]
         public void ShouldUpdateCompanyName()
         {
-            Setup();
-
             _ = _companyUpdateHandler.Handle(_companyUpdateCommand, _cancellationToken);
 
             _companySave.Name.Should().Be(_companyUpdateCommand.Name);
@@ -85,8 +72,6 @@ namespace Test.UseCases.CompanyUpdateUseCase
         [Fact]
         public void ShouldUpdateCompanyEmail()
         {
-            Setup();
-
             _ = _companyUpdateHandler.Handle(_companyUpdateCommand, _cancellationToken);
 
             _companySave.Email.Should().Be(_companyUpdateCommand.Email);
@@ -95,8 +80,6 @@ namespace Test.UseCases.CompanyUpdateUseCase
         [Fact]
         public void ShouldUpdateCompanyFoundationDate()
         {
-            Setup();
-
             _ = _companyUpdateHandler.Handle(_companyUpdateCommand, _cancellationToken);
 
             _companySave.FoundationDate.Should().Be(_companyUpdateCommand.FoundationDate.ToDate());
@@ -105,7 +88,6 @@ namespace Test.UseCases.CompanyUpdateUseCase
         [Fact]
         public void NotShouldUpdateCompanyCnpj()
         {
-            Setup();
             _companyUpdateCommand.Cnpj = _faker.Company.Cnpj();
 
             _ = _companyUpdateHandler.Handle(_companyUpdateCommand, _cancellationToken);
@@ -116,23 +98,21 @@ namespace Test.UseCases.CompanyUpdateUseCase
         [Fact]
         public void ShouldReturnErrorWhenCompanyNotFound()
         {
-            Setup();
             _companyRepositoryMock.Setup(x => x.GetByCnpj(_companyUpdateCommand.Cnpj)).Returns<Company>(null);
 
            var response =_companyUpdateHandler.Handle(_companyUpdateCommand, _cancellationToken).Result;
 
-            response.Errors.Should().Contain(Constantes.EmpresaNaoEncontrada);
+            response.Errors.Should().Contain(Constants.MsgCompanyNotFound);
         }
 
         [Fact]
         public void ShouldThrowExceptionWhenRequestNull()
         {
-            Setup();
             _companyUpdateCommand = null;
 
-            var response = _companyUpdateHandler.Invoking(x => x.Handle(_companyUpdateCommand, _cancellationToken));
+            var response = _companyUpdateHandler.Handle(_companyUpdateCommand, _cancellationToken).Result;
 
-            response.Should().ThrowAsync<ArgumentNullException>();
+            response.Errors.Should().Contain(Constants.MsgUnexpectedError);
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using Application.Core;
 using Application.Interfaces.Repositories;
-using Domain.Entities;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,7 +22,7 @@ namespace Application.UseCases.CompanyUpdateUseCase
                 var company = _companyRepository.GetByCnpj(request.Cnpj);
 
                 if (company == null)
-                    return new Response().AddError(Constantes.EmpresaNaoEncontrada);
+                    return new Response().AddError(Constants.MsgCompanyNotFound);
 
                 company.UpdateName(request.Name);
                 company.UpdateEmail(request.Email);
@@ -34,10 +32,10 @@ namespace Application.UseCases.CompanyUpdateUseCase
             }
             catch
             {
-                throw new ArgumentNullException();
+                return new Response().AddError(Constants.MsgUnexpectedError);
             }
 
-            return new Response(Constantes.EmpresaAlterada);
+            return new Response(Constants.MsgCompanyChanged);
         }
     }
 }

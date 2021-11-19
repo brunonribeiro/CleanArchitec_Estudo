@@ -3,7 +3,6 @@ using Application.UseCases.CompanySaveUseCase;
 using AutoFixture;
 using Bogus;
 using Bogus.Extensions.Brazil;
-using FluentAssertions;
 using FluentValidation.TestHelper;
 using System;
 using Xunit;
@@ -14,7 +13,7 @@ namespace Test.UseCases.CompanySaveUseCase
     {
         private readonly Fixture _builder;
         private readonly Faker _faker;
-        private CompanySaveValidator _validator;
+        private readonly CompanySaveValidator _validator;
 
         public CompanySaveValidatorTest()
         {
@@ -41,7 +40,7 @@ namespace Test.UseCases.CompanySaveUseCase
         [Fact]
         public void ShouldHaveErrorWhenNameIsBiggerThan100()
         {
-            var nameInvalid = _faker.Random.AlphaNumeric(Constantes.QuantidadeDeCaracteres100 + 1);
+            var nameInvalid = _faker.Random.AlphaNumeric(Constants.NumberOfCharacters100 + 1);
 
             var model = _builder
                 .Build<CompanySaveCommand>()

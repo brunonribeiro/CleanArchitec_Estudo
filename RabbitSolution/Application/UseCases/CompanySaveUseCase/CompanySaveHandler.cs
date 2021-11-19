@@ -39,10 +39,10 @@ namespace Application.UseCases.CompanySaveUseCase
             }
             catch
             {
-                throw new ArgumentNullException();
+                return new Response().AddError(Constants.MsgUnexpectedError);
             }
 
-            return new Response(Constantes.EmpresaCadastrada);
+            return new Response(Constants.MsgCompanyRegistered);
         }
     }
 }

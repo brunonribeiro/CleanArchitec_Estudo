@@ -15,13 +15,13 @@ namespace Application.UseCases.CompanyUpdateUseCase
 
             RuleFor(a => a.Name)
                .NotEmpty()
-               .MaximumLength(Constantes.QuantidadeDeCaracteres100);
+               .MaximumLength(Constants.NumberOfCharacters100);
 
             RuleFor(a => a.Email)
                 .EmailAddress();
 
             RuleFor(a => a.FoundationDate)
-                .Must(DateValidator.Valid).WithMessage(Constantes.MsgDataInvalida);
+                .Must(DateValidator.Valid).WithMessage(Constants.MsgInvalidDate);
         }
     }
 }

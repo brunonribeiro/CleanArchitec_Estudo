@@ -39,7 +39,7 @@ namespace Test.UseCases.CompanyUpdateUseCase
         [Fact]
         public void ShouldHaveErrorWhenNameIsBiggerThan100()
         {
-            var nameInvalid = _faker.Random.String(minLength: Constantes.QuantidadeDeCaracteres100 + 1, maxLength: 1000);
+            var nameInvalid = _faker.Random.String(minLength: Constants.NumberOfCharacters100 + 1, maxLength: 1000);
 
             var model = _builder
                 .Build<CompanyUpdateCommand>()

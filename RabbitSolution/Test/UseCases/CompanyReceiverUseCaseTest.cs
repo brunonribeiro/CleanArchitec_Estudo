@@ -18,17 +18,18 @@ namespace Test.UseCases
 
         public CompanyReceiverUseCaseTest()
         {
-            _rabbitServiceMock = new Mock<IRabbitService>();
+            _rabbitServiceMock = new Mock<IRabbitService>(MockBehavior.Strict);
         }
 
         [Fact]
         public void ShouldCallRabbit()
         {
+            _rabbitServiceMock.Setup(x => x.Read());
             _receiver = new CompanyReceiverUseCase(_rabbitServiceMock.Object);
 
             _receiver.Execute();
 
-            _rabbitServiceMock.Verify(x => x.Read());
+            _rabbitServiceMock.VerifyAll();
         }
 
         [Fact]

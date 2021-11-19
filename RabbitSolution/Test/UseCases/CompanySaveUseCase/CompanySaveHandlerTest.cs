@@ -15,23 +15,22 @@ namespace Test.UseCases.CompanySaveUseCase
 {
     public class CompanySaveHandlerTest
     {
-        private Faker _faker;
-        private Fixture _builder;
-        private CompanySaveCommand _companySaveCommand;
-        private CancellationToken _cancellationToken;
+        private readonly Faker _faker;
+        private readonly Fixture _builder;
+        private readonly MockRepository _builderMock;
         private readonly Mock<ICompanyRepository> _companyRepositoryMock;
         private readonly Mock<IRabbitService> _rabbitServiceMock;
         private readonly CompanySaveHandler _companySaveHandler;
+        private readonly CancellationToken _cancellationToken;
+        private CompanySaveCommand _companySaveCommand;
 
         public CompanySaveHandlerTest()
         {
-            _companyRepositoryMock = new Mock<ICompanyRepository>();
-            _rabbitServiceMock = new Mock<IRabbitService>();
-            _companySaveHandler = new CompanySaveHandler(_companyRepositoryMock.Object, _rabbitServiceMock.Object);         
-        }
+            _builderMock = new MockRepository(MockBehavior.Strict);
+            _companyRepositoryMock = _builderMock.Create<ICompanyRepository>();
+            _rabbitServiceMock = _builderMock.Create<IRabbitService>();
+            _companySaveHandler = new CompanySaveHandler(_companyRepositoryMock.Object, _rabbitServiceMock.Object);
 
-        private void Setup()
-        {
             _builder = new Fixture();
             _faker = new Faker("pt_BR");
 
@@ -43,45 +42,41 @@ namespace Test.UseCases.CompanySaveUseCase
             _cancellationToken = _builder.Create<CancellationToken>();
         }
 
+        private void SetupMocks()
+        {
+            _rabbitServiceMock.Setup(x => x.Post(_companySaveCommand));
+            _companyRepositoryMock.Setup(x => x.Save(It.Is<Company>(x => x.Cnpj == _companySaveCommand.Cnpj)));
+        }
+
         [Fact]
         public void ShouldCreateCompany()
         {
-            Setup();
+            SetupMocks();
 
             var response = _companySaveHandler.Handle(_companySaveCommand, _cancellationToken).Result;
 
-            response.Result.Should().Be(Constantes.EmpresaCadastrada);
+            response.Result.Should().Be(Constants.MsgCompanyRegistered);
         }
 
         [Fact]
-        public void ShouldCallRepository()
+        public void ShouldCallServices()
         {
-            Setup();
+            SetupMocks();
 
-            var response = _companySaveHandler.Handle(_companySaveCommand, _cancellationToken).Result;
+            _ = _companySaveHandler.Handle(_companySaveCommand, _cancellationToken);
 
-            _companyRepositoryMock.Verify(x => x.Save(It.IsAny<Company>()));
+            _builderMock.VerifyAll();
         }
 
         [Fact]
-        public void ShouldCallRabbit()
+        public void ShouldReturnErrorWhenRequestNull()
         {
-            Setup();
-
-            var response = _companySaveHandler.Handle(_companySaveCommand, _cancellationToken).Result;
-
-            _rabbitServiceMock.Verify(x => x.Post(It.IsAny<CompanySaveCommand>()));
-        }
-
-        [Fact]
-        public void ShouldThrowExceptionWhenRequestNull()
-        {
-            Setup();
+            SetupMocks();
             _companySaveCommand = null;
 
-            var response = _companySaveHandler.Invoking(x => x.Handle(_companySaveCommand, _cancellationToken));
+            var response = _companySaveHandler.Handle(_companySaveCommand, _cancellationToken).Result;
 
-            response.Should().ThrowAsync<ArgumentNullException>();
+            response.Errors.Should().Contain(Constants.MsgUnexpectedError);
         }
     }
 }
