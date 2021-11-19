@@ -11,6 +11,6 @@ namespace Application.Core
         public const string MsgCompanyRegistered = "Empresa cadastrada com sucesso";
         public const string MsgCompanyChanged = "Empresa alterada com sucesso";
         public const string MsgCompanyNotFound = "Empresa não encontrada";
-        public const string MsgUnexpectedError = "Empresa não previsto";
+        public const string MsgUnexpectedError = "Erro não esperado";
     }
 }

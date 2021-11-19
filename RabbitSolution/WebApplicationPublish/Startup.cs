@@ -1,13 +1,21 @@
 using IoC;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Linq;
+using System.Net.Mime;
+using System.Text.Json;
 using WebApplication.Consumer;
+using HealthChecks.UI.Client;
+using RabbitMQ.Client;
 
 namespace WebApplication
 {
@@ -24,8 +32,9 @@ namespace WebApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHostedService<RabbitConsumer>();
-            services.Register();
+            services.Register(Configuration);
 
+            services.AddHealthChecks();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -42,6 +51,41 @@ namespace WebApplication
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApplication v1"));
             }
+
+            app.UseHealthChecks("/status",
+               new HealthCheckOptions()
+               {
+                   ResponseWriter = async (context, report) =>
+                   {
+                       var result = JsonSerializer.Serialize(
+                           new
+                           {
+                               currentTime = DateTime.Now.ToLongDateString(),
+                               statusApplication = report.Status.ToString(),
+                               healthChecks = report.Entries.Select(e => new
+                               {
+                                   check = e.Key,
+                                   status = Enum.GetName(typeof(HealthStatus), e.Value.Status)
+                               })
+                           });
+
+                       context.Response.ContentType = MediaTypeNames.Application.Json;
+                       await context.Response.WriteAsync(result);
+                   }
+               });
+
+            // Generated the endpoint which will return the needed data
+            app.UseHealthChecks("/healthchecks-data-ui", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            // Activate the dashboard for UI
+            app.UseHealthChecksUI(options =>
+            {
+                options.UIPath = "/monitor";
+            });
 
             app.UseRouting();
 
