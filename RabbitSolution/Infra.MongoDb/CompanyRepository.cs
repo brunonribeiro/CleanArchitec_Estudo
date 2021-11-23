@@ -10,7 +10,7 @@ namespace Infra.MongoDb
 {
     public sealed class CompanyRepository : Repository<Company>, ICompanyRepositoryMongoDb
     {
-        private readonly static string _collectionName = "Company";
+        private static readonly string _collectionName = "Company";
 
         public CompanyRepository(IConfiguration configuration, ILogger<CompanyRepository> logger) : base(configuration, logger, _collectionName)
         {

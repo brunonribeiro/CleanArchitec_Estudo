@@ -45,7 +45,11 @@ namespace IoC
 
             services.AddHealthChecks()
                 .AddRedis(configuration.GetSection("Redis:Host").Value,
-                    name: "redis", tags: new string[] { "redis", "infra" });
+                    name: "redis", tags: new string[] { "redis", "cache" });
+
+            services.AddHealthChecks()
+             .AddMongoDb(configuration.GetSection("MongoDb:ConnectionString").Value,
+                 name: "mongodb", tags: new string[] { "mongo", "banco" });
 
             services.AddHealthChecksUI()
                 .AddInMemoryStorage();
