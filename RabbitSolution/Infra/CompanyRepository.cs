@@ -27,18 +27,10 @@ namespace Infra.Redis
             _redisClient = new RedisClient(_config.Host);
         }
 
-        public Company GetByCnpj(string cnpj)
-        {
-            var company = _redisClient.Get<Company>(cnpj);
-            _logger.LogInformation(GenerateLog(company, "Read Database"));
-
-            return company;
-        }
-
         public void Save(Company company)
         {
             _redisClient.Set(company.Cnpj, company, new TimeSpan(0, 30, 0));
-            _logger.LogInformation(GenerateLog(company, "Save Database"));
+            _logger.LogInformation(GenerateLog(company, "Save Database Redis"));
         }
 
         private static string GenerateLog(Company company, string description)

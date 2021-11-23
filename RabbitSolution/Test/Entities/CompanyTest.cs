@@ -23,7 +23,10 @@ namespace Test.Entities
         {
             var model = _builder.Build<Company>().Without(x => x.Id).Create();
 
-            var company = new Company(model.Name, model.Cnpj, model.Email, model.FoundationDate);
+            var company = new Company(model.Name, model.Cnpj, model.Email, model.FoundationDate)
+            {
+                Id = model.Id
+            };
 
             company.Should().BeEquivalentTo(model);
         }

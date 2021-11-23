@@ -47,6 +47,7 @@ namespace Test.UseCases.CompanySaveUseCase
         {
             _rabbitServiceMock.Setup(x => x.Post(_companySaveCommand));
             _companyRepositoryMock.Setup(x => x.Save(It.Is<Company>(x => x.Cnpj == _companySaveCommand.Cnpj)));
+            _companyRepositoryMongoDbMock.Setup(x => x.Insert(It.Is<Company>(x => x.Cnpj == _companySaveCommand.Cnpj)));
         }
 
         [Fact]

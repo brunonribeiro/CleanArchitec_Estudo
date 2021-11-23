@@ -42,8 +42,8 @@ namespace Test.UseCases.CompanyUpdateUseCase
                 .With(x => x.Cnpj, _companyUpdateCommand.Cnpj)
                 .Create();
 
-            _companyRepositoryRedisMock
-                .Setup(x => x.GetByCnpj(_companyUpdateCommand.Cnpj))
+            _companyRepositoryMongoDbMock
+                .Setup(x => x.QueryByCnpj(_companyUpdateCommand.Cnpj))
                 .Returns(_companySave);
 
             _cancellationToken = _builder.Create<CancellationToken>();
@@ -53,6 +53,7 @@ namespace Test.UseCases.CompanyUpdateUseCase
         public void ShouldUpdateCompany()
         {
             _companyRepositoryRedisMock.Setup(x => x.Save(_companySave));
+            _companyRepositoryMongoDbMock.Setup(x => x.Update(_companySave));
 
             var response = _companyUpdateHandler.Handle(_companyUpdateCommand, _cancellationToken).Result;
 
@@ -97,7 +98,7 @@ namespace Test.UseCases.CompanyUpdateUseCase
         [Fact]
         public void ShouldReturnErrorWhenCompanyNotFound()
         {
-            _companyRepositoryRedisMock.Setup(x => x.GetByCnpj(_companyUpdateCommand.Cnpj)).Returns<Company>(null);
+            _companyRepositoryMongoDbMock.Setup(x => x.QueryByCnpj(_companyUpdateCommand.Cnpj)).Returns<Company>(null);
 
             var response = _companyUpdateHandler.Handle(_companyUpdateCommand, _cancellationToken).Result;
 
