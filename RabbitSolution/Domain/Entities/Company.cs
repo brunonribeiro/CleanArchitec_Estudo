@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Interfaces;
+using System;
 
 namespace Domain.Entities
 {
@@ -12,7 +13,7 @@ namespace Domain.Entities
             FoundationDate = foundationDate;
         }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Cnpj { get; set; }
         public string Name { get; private set; }
         public string Email { get; private set; }

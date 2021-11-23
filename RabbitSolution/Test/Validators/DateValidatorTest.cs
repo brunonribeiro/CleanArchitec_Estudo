@@ -19,7 +19,7 @@ namespace Test.Validators
         {
             var validDate = _faker.Date.Past(30).ToShortDateString();
 
-           var result = DateValidator.Valid(validDate);
+            var result = DateValidator.Valid(validDate);
 
             result.Should().BeTrue();
         }

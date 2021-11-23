@@ -1,5 +1,4 @@
-﻿
-namespace Application.Core
+﻿namespace Application.Core
 {
     public static class Constants
     {

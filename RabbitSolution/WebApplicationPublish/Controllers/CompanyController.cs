@@ -1,5 +1,4 @@
-﻿using Application.DTO;
-using Application.UseCases.CompanySaveUseCase;
+﻿using Application.UseCases.CompanySaveUseCase;
 using Application.UseCases.CompanyUpdateUseCase;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

@@ -1,14 +1,13 @@
-﻿using Application.Interfaces.Services;
-using Domain.Entities;
+﻿using Application.DTO;
+using Application.Interfaces.Services;
+using Application.UseCases.CompanySaveUseCase;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System.Text;
-using Microsoft.Extensions.Logging;
 using System;
-using Application.UseCases.CompanySaveUseCase;
-using Application.DTO;
+using System.Text;
 
 namespace RabbitMq
 {
@@ -39,7 +38,7 @@ namespace RabbitMq
             };
         }
 
-        public void Post(CompanyDto company) 
+        public void Post(CompanyDto company)
         {
             using (var connection = _factory.CreateConnection())
             {
@@ -110,6 +109,5 @@ namespace RabbitMq
         {
             return $"{description} ({DateTime.Now}): {company?.Name} - {company?.Cnpj} {(!string.IsNullOrWhiteSpace(company?.Email) ? "- " + company?.Email : "")} - {company?.FoundationDate}";
         }
-
     }
 }

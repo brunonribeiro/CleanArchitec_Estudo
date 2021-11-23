@@ -4,7 +4,6 @@ using AutoFixture;
 using Bogus;
 using Bogus.Extensions.Brazil;
 using FluentValidation.TestHelper;
-using System;
 using Xunit;
 
 namespace Test.UseCases.CompanySaveUseCase

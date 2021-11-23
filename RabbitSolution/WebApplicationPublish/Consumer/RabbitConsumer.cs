@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Application.Interfaces.UseCases;
+using Microsoft.Extensions.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Interfaces.UseCases;
 
 namespace WebApplication.Consumer
 {

@@ -1,5 +1,4 @@
-﻿using Application.Interfaces.Repositories;
-using Application.Interfaces.Services;
+﻿using Application.Interfaces.Services;
 using Application.Interfaces.UseCases;
 using System;
 

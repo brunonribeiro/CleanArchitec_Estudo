@@ -1,5 +1,5 @@
+using HealthChecks.UI.Client;
 using IoC;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -14,8 +14,6 @@ using System.Linq;
 using System.Net.Mime;
 using System.Text.Json;
 using WebApplication.Consumer;
-using HealthChecks.UI.Client;
-using RabbitMQ.Client;
 
 namespace WebApplication
 {
