@@ -4,12 +4,13 @@ using Application.Interfaces.Services;
 using Application.Interfaces.UseCases;
 using Application.UseCases;
 using FluentValidation;
-using Infra;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMq;
 using System;
+using CompanyRepositoryMongoDb = Infra.MongoDb.CompanyRepository;
+using CompanyRepositoryRedis = Infra.Redis.CompanyRepository;
 
 namespace IoC
 {
@@ -17,7 +18,8 @@ namespace IoC
     {
         public static void Register(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<ICompanyRepository, CompanyRepository>();
+            services.AddSingleton<ICompanyRepositoryRedis, CompanyRepositoryRedis>();
+            services.AddSingleton<ICompanyRepositoryMongoDb, CompanyRepositoryMongoDb>();
             services.AddSingleton<ICompanyReceiverUseCase, CompanyReceiverUseCase>();
             services.AddSingleton<IRabbitService, RabbitService>();
             services.AddHealthCheck(configuration);
@@ -49,7 +51,7 @@ namespace IoC
                 .AddInMemoryStorage();
         }
 
-        private static void AddHealthCheckRabbitMQ(this IServiceCollection services,IConfiguration configuration)
+        private static void AddHealthCheckRabbitMQ(this IServiceCollection services, IConfiguration configuration)
         {
             var config = new RabbitMqConfiguration
             {

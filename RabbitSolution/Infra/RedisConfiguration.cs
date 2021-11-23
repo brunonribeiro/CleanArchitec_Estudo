@@ -1,5 +1,4 @@
-﻿
-namespace Infra
+﻿namespace Infra.Redis
 {
     public class RedisConfiguration
     {

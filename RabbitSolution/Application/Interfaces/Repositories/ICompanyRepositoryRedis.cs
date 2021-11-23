@@ -2,9 +2,10 @@
 
 namespace Application.Interfaces.Repositories
 {
-    public interface ICompanyRepository
+    public interface ICompanyRepositoryRedis
     {
         Company GetByCnpj(string cnpj);
-        void Save(Company company);       
+
+        void Save(Company company);
     }
 }

@@ -17,7 +17,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
-    <ProjectReference Include="..\Infra\Infra.csproj" />
+    <ProjectReference Include="..\Infra.MongoDb\Infra.MongoDb.csproj" />
+    <ProjectReference Include="..\Infra\Infra.Redis.csproj" />
     <ProjectReference Include="..\RabbitMq\RabbitMq.csproj" />
   </ItemGroup>
 

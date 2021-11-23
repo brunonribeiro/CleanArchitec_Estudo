@@ -3,7 +3,6 @@ using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Domain.Entities;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,13 +10,15 @@ namespace Application.UseCases.CompanySaveUseCase
 {
     public class CompanySaveHandler : IRequestHandler<CompanySaveCommand, Response>
     {
-        private readonly ICompanyRepository _companyRepository;
+        private readonly ICompanyRepositoryRedis _companyRepositoryRedis;
+        private readonly ICompanyRepositoryMongoDb _companyRepositoryMongoDb;
         private readonly IRabbitService _rabbitService;
 
-        public CompanySaveHandler(ICompanyRepository companyRepository, IRabbitService rabbitService)
+        public CompanySaveHandler(IRabbitService rabbitService, ICompanyRepositoryRedis companyRepositoryRedis, ICompanyRepositoryMongoDb companyRepositoryMongoDb)
         {
-            _companyRepository = companyRepository;
             _rabbitService = rabbitService;
+            _companyRepositoryRedis = companyRepositoryRedis;
+            _companyRepositoryMongoDb = companyRepositoryMongoDb;
         }
 
         public async Task<Response> Handle(CompanySaveCommand request, CancellationToken cancellationToken)
@@ -35,7 +36,8 @@ namespace Application.UseCases.CompanySaveUseCase
                 );
 
                 //Salva no banco de dados
-                _companyRepository.Save(company);
+                _companyRepositoryRedis.Save(company);
+                _companyRepositoryMongoDb.Insert(company);
             }
             catch
             {

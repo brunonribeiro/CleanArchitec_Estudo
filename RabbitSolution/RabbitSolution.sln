@@ -9,13 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{A99DAF72-E783-44E9-980E-AF2D8E62E62A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infra", "Infra\Infra.csproj", "{F45FE0C3-7685-442D-BF8D-9CCE3F069BB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infra.Redis", "Infra\Infra.Redis.csproj", "{F45FE0C3-7685-442D-BF8D-9CCE3F069BB9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMq", "RabbitMq\RabbitMq.csproj", "{13E53E12-F43C-4B8E-9C8C-18856F98DEF4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IoC", "IoC\IoC.csproj", "{250CCBB3-F6E9-4FC8-9CDE-04D8C362036D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{779F08F7-A8A7-4FB8-8869-E8E77341578E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{779F08F7-A8A7-4FB8-8869-E8E77341578E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra.MongoDb", "Infra.MongoDb\Infra.MongoDb.csproj", "{B5291A89-AC4E-4A49-9AEE-F1FEA4C6F6D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{779F08F7-A8A7-4FB8-8869-E8E77341578E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{779F08F7-A8A7-4FB8-8869-E8E77341578E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{779F08F7-A8A7-4FB8-8869-E8E77341578E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5291A89-AC4E-4A49-9AEE-F1FEA4C6F6D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5291A89-AC4E-4A49-9AEE-F1FEA4C6F6D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5291A89-AC4E-4A49-9AEE-F1FEA4C6F6D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5291A89-AC4E-4A49-9AEE-F1FEA4C6F6D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,6 @@
 ﻿using Application.Core;
 using Application.Core.Validators;
 using FluentValidation;
-using System;
 
 namespace Application.UseCases.CompanyUpdateUseCase
 {

@@ -7,7 +7,6 @@ using Bogus;
 using Domain.Entities;
 using FluentAssertions;
 using Moq;
-using System;
 using System.Threading;
 using Xunit;
 
@@ -18,7 +17,8 @@ namespace Test.UseCases.CompanySaveUseCase
         private readonly Faker _faker;
         private readonly Fixture _builder;
         private readonly MockRepository _builderMock;
-        private readonly Mock<ICompanyRepository> _companyRepositoryMock;
+        private readonly Mock<ICompanyRepositoryRedis> _companyRepositoryMock;
+        private readonly Mock<ICompanyRepositoryMongoDb> _companyRepositoryMongoDbMock;
         private readonly Mock<IRabbitService> _rabbitServiceMock;
         private readonly CompanySaveHandler _companySaveHandler;
         private readonly CancellationToken _cancellationToken;
@@ -27,9 +27,10 @@ namespace Test.UseCases.CompanySaveUseCase
         public CompanySaveHandlerTest()
         {
             _builderMock = new MockRepository(MockBehavior.Strict);
-            _companyRepositoryMock = _builderMock.Create<ICompanyRepository>();
+            _companyRepositoryMock = _builderMock.Create<ICompanyRepositoryRedis>();
+            _companyRepositoryMongoDbMock = _builderMock.Create<ICompanyRepositoryMongoDb>();
             _rabbitServiceMock = _builderMock.Create<IRabbitService>();
-            _companySaveHandler = new CompanySaveHandler(_companyRepositoryMock.Object, _rabbitServiceMock.Object);
+            _companySaveHandler = new CompanySaveHandler(_rabbitServiceMock.Object, _companyRepositoryMock.Object, _companyRepositoryMongoDbMock.Object);
 
             _builder = new Fixture();
             _faker = new Faker("pt_BR");

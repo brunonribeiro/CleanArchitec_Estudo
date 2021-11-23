@@ -5,11 +5,11 @@ namespace Domain.Base
 {
     public abstract class Entity : IEntity
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         protected Entity()
         {
-            Id = Guid.NewGuid();
+            Id = new Random().Next();
         }
     }
 }

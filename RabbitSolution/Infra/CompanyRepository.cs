@@ -4,12 +4,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ServiceStack.Redis;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Infra
+namespace Infra.Redis
 {
-    public class CompanyRepository : ICompanyRepository
+    public class CompanyRepository : ICompanyRepositoryRedis
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
@@ -39,7 +37,7 @@ namespace Infra
 
         public void Save(Company company)
         {
-            _redisClient.Set(company.Cnpj, company, new TimeSpan(0,30,0));
+            _redisClient.Set(company.Cnpj, company, new TimeSpan(0, 30, 0));
             _logger.LogInformation(GenerateLog(company, "Save Database"));
         }
 

@@ -1,9 +1,9 @@
-﻿using Domain.Interfaces;
+﻿using Domain.Base;
 using System;
 
 namespace Domain.Entities
 {
-    public class Company : IEntity
+    public class Company : Entity
     {
         public Company(string name, string cnpj, string email, DateTime foundationDate)
         {
@@ -13,7 +13,6 @@ namespace Domain.Entities
             FoundationDate = foundationDate;
         }
 
-        public Guid Id { get; set; }
         public string Cnpj { get; set; }
         public string Name { get; private set; }
         public string Email { get; private set; }
