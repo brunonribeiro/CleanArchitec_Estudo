@@ -48,6 +48,7 @@ namespace Test.UseCases.CompanySaveUseCase
             _rabbitServiceMock.Setup(x => x.Post(_companySaveCommand));
             _companyRepositoryMock.Setup(x => x.Save(It.Is<Company>(x => x.Cnpj == _companySaveCommand.Cnpj)));
             _companyRepositoryMongoDbMock.Setup(x => x.Insert(It.Is<Company>(x => x.Cnpj == _companySaveCommand.Cnpj)));
+            _companyRepositoryMongoDbMock.Setup(x => x.QueryByCnpj(_companySaveCommand.Cnpj)).Returns((Company)null);
         }
 
         [Fact]
@@ -79,6 +80,17 @@ namespace Test.UseCases.CompanySaveUseCase
             var response = _companySaveHandler.Handle(_companySaveCommand, _cancellationToken).Result;
 
             response.Errors.Should().Contain(Constants.MsgUnexpectedError);
+        }
+
+        [Fact]
+        public void ShouldReturnErrorWhenCompanyAlreadySaved()
+        {
+            SetupMocks();
+            _companyRepositoryMongoDbMock.Setup(x => x.QueryByCnpj(_companySaveCommand.Cnpj)).Returns(_builder.Create<Company>());
+
+            var response = _companySaveHandler.Handle(_companySaveCommand, _cancellationToken).Result;
+
+            response.Errors.Should().Contain(Constants.MsgCompanyAlreadySaved);
         }
     }
 }

@@ -50,6 +50,20 @@ namespace WebApplication
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApplication v1"));
             }
 
+            ConfigureHealthChecks(app);
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+
+        private static void ConfigureHealthChecks(IApplicationBuilder app)
+        {
             app.UseHealthChecks("/status",
                new HealthCheckOptions()
                {
@@ -83,15 +97,6 @@ namespace WebApplication
             app.UseHealthChecksUI(options =>
             {
                 options.UIPath = "/monitor";
-            });
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
             });
         }
     }

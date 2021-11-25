@@ -25,6 +25,11 @@ namespace Application.UseCases.CompanySaveUseCase
         {
             try
             {
+                var companySaved = _companyRepositoryMongoDb.QueryByCnpj(request.Cnpj);
+
+                if (companySaved != null)
+                    return new Response().AddError(Constants.MsgCompanyAlreadySaved);
+
                 //Envia mensagem para RabbitMQ
                 _rabbitService.Post(request);
 
