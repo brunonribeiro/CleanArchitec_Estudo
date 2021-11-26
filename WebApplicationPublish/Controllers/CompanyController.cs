@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Repositories;
+using Application.UseCases.CompanyDeleteUseCase;
 using Application.UseCases.CompanySaveUseCase;
 using Application.UseCases.CompanyUpdateUseCase;
 using MediatR;
@@ -30,9 +31,18 @@ namespace WebApplication.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("Update")]
         public async Task<IActionResult> Update([FromBody] CompanyUpdateCommand command)
+        {
+            var response = await _mediator.Send(command);
+
+            return Ok(response);
+        }
+
+        [HttpDelete]
+        [Route("Delete")]
+        public async Task<IActionResult> Delete([FromBody] CompanyDeleteCommand command)
         {
             var response = await _mediator.Send(command);
 

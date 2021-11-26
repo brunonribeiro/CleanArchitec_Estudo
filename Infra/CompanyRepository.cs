@@ -3,7 +3,9 @@ using Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ServiceStack.Redis;
+using Newtonsoft.Json;
 using System;
+using System.Text;
 
 namespace Infra.Redis
 {
@@ -27,10 +29,32 @@ namespace Infra.Redis
             _redisClient = new RedisClient(_config.Host);
         }
 
+        public Company Get(string cnpj)
+        {
+            var contentArray = _redisClient.Get(cnpj);
+            if (contentArray != null)
+            {
+                var contentString = Encoding.UTF8.GetString(contentArray);
+                var company = JsonConvert.DeserializeObject<Company>(contentString);
+
+                _logger.LogInformation(GenerateLog(company, "Read Database Redis"));
+                return company;
+            }
+
+            return null;
+        }
+
+
         public void Save(Company company)
         {
             _redisClient.Set(company.Cnpj, company, new TimeSpan(0, 30, 0));
             _logger.LogInformation(GenerateLog(company, "Save Database Redis"));
+        }
+
+        public void Delete(Company company)
+        {
+            _redisClient.Remove(company.Cnpj);
+            _logger.LogInformation(GenerateLog(company, "Delete Database Redis"));
         }
 
         private static string GenerateLog(Company company, string description)

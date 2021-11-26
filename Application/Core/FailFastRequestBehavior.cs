@@ -2,12 +2,14 @@
 using FluentValidation.Results;
 using MediatR;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Core
 {
+    [ExcludeFromCodeCoverage]
     public class FailFastRequestBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
          where TRequest : IRequest<TResponse> where TResponse : Response
     {

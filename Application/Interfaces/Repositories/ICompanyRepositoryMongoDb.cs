@@ -14,5 +14,6 @@ namespace Application.Interfaces.Repositories
         void Insert(Company obj);
 
         void Update(Company obj);
+        void Delete(Company obj);
     }
 }

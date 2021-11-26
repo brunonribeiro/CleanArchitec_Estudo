@@ -49,6 +49,12 @@ namespace Infra.MongoDb.Base
             _logger.LogInformation(GenerateLog(obj, "Update Database MongoDB"));
         }
 
+        public void Delete(T obj)
+        {
+            _collection.DeleteOne(x => x.Id == obj.Id);
+            _logger.LogInformation(GenerateLog(obj, "Delete Database MongoDB"));
+        }
+
         protected static string GenerateLog(T obj, string description)
         {
             return $"{description} ({DateTime.Now}): {obj?.Id}";
