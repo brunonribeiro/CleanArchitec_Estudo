@@ -46,7 +46,7 @@ namespace RabbitMq
                 {
                     channel.QueueDeclare(
                         queue: _config.Queue,
-                        durable: false,
+                        durable: true,
                         exclusive: false,
                         autoDelete: false,
                         arguments: null
@@ -56,7 +56,7 @@ namespace RabbitMq
                     var messageBytes = Encoding.UTF8.GetBytes(messageSerialized);
 
                     channel.BasicPublish(
-                           exchange: "",
+                           exchange: "amq.fanout",
                            routingKey: _config.Queue,
                            basicProperties: null,
                            body: messageBytes
@@ -74,7 +74,7 @@ namespace RabbitMq
 
             _chanel.QueueDeclare(
                 queue: _config.Queue,
-                durable: false,
+                durable: true,
                 exclusive: false,
                 autoDelete: false,
                 arguments: null
