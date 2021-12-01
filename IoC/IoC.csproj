@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.Kafka" Version="5.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="5.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="5.0.2" />
     <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="5.0.2" />
@@ -20,6 +21,7 @@
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Infra.MongoDb\Infra.MongoDb.csproj" />
     <ProjectReference Include="..\Infra\Infra.Redis.csproj" />
+    <ProjectReference Include="..\Kafka\Kafka.csproj" />
     <ProjectReference Include="..\RabbitMq\RabbitMq.csproj" />
   </ItemGroup>
 

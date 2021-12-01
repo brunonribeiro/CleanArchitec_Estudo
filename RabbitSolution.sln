@@ -17,7 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IoC", "IoC\IoC.csproj", "{2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{779F08F7-A8A7-4FB8-8869-E8E77341578E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra.MongoDb", "Infra.MongoDb\Infra.MongoDb.csproj", "{B5291A89-AC4E-4A49-9AEE-F1FEA4C6F6D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infra.MongoDb", "Infra.MongoDb\Infra.MongoDb.csproj", "{B5291A89-AC4E-4A49-9AEE-F1FEA4C6F6D4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kafka", "Kafka\Kafka.csproj", "{C848B177-C790-4B0C-A58F-BFAFDD18EB2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consumer", "Consumer\Consumer.csproj", "{27129FEB-39A7-440A-B52E-0D9674E7567C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,14 @@ Global
 		{B5291A89-AC4E-4A49-9AEE-F1FEA4C6F6D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5291A89-AC4E-4A49-9AEE-F1FEA4C6F6D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5291A89-AC4E-4A49-9AEE-F1FEA4C6F6D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C848B177-C790-4B0C-A58F-BFAFDD18EB2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C848B177-C790-4B0C-A58F-BFAFDD18EB2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C848B177-C790-4B0C-A58F-BFAFDD18EB2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C848B177-C790-4B0C-A58F-BFAFDD18EB2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27129FEB-39A7-440A-B52E-0D9674E7567C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27129FEB-39A7-440A-B52E-0D9674E7567C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27129FEB-39A7-440A-B52E-0D9674E7567C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27129FEB-39A7-440A-B52E-0D9674E7567C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

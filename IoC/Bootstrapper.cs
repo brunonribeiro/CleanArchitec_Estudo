@@ -3,7 +3,9 @@ using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Application.Interfaces.UseCases;
 using Application.UseCases;
+using Confluent.Kafka;
 using FluentValidation;
+using Kafka;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +24,7 @@ namespace IoC
             services.AddSingleton<ICompanyRepositoryMongoDb, CompanyRepositoryMongoDb>();
             services.AddSingleton<ICompanyReceiverUseCase, CompanyReceiverUseCase>();
             services.AddSingleton<IRabbitService, RabbitService>();
+            services.AddSingleton<IKafkaService, KafkaService>();
             services.AddHealthCheck(configuration);
             services.AddMediatr();
         }
@@ -50,6 +53,12 @@ namespace IoC
             services.AddHealthChecks()
              .AddMongoDb(configuration.GetSection("MongoDb:ConnectionString").Value,
                  name: "mongodb", tags: new string[] { "mongo", "banco" });
+
+            services.AddHealthChecks()
+             .AddKafka(new ProducerConfig()
+             {
+                 BootstrapServers = configuration.GetSection("Kafka:Host").Value
+             }, name: "kafka", tags: new string[] { "kafka", "mensageria" });
 
             services.AddHealthChecksUI()
                 .AddInMemoryStorage();

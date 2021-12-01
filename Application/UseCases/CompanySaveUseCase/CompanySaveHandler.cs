@@ -13,12 +13,15 @@ namespace Application.UseCases.CompanySaveUseCase
         private readonly ICompanyRepositoryRedis _companyRepositoryRedis;
         private readonly ICompanyRepositoryMongoDb _companyRepositoryMongoDb;
         private readonly IRabbitService _rabbitService;
+        private readonly IKafkaService _kafkaService;
 
-        public CompanySaveHandler(IRabbitService rabbitService, ICompanyRepositoryRedis companyRepositoryRedis, ICompanyRepositoryMongoDb companyRepositoryMongoDb)
+        public CompanySaveHandler(IRabbitService rabbitService, ICompanyRepositoryRedis companyRepositoryRedis,
+            ICompanyRepositoryMongoDb companyRepositoryMongoDb, IKafkaService kafkaService)
         {
             _rabbitService = rabbitService;
             _companyRepositoryRedis = companyRepositoryRedis;
             _companyRepositoryMongoDb = companyRepositoryMongoDb;
+            _kafkaService = kafkaService;
         }
 
         public async Task<Response> Handle(CompanySaveCommand request, CancellationToken cancellationToken)
@@ -32,6 +35,7 @@ namespace Application.UseCases.CompanySaveUseCase
 
                 //Envia mensagem para RabbitMQ
                 _rabbitService.Post(request);
+                _kafkaService.Produce(request);
 
                 var company = new Company(
                    request.Name,
