@@ -20,6 +20,7 @@ namespace Test.UseCases.CompanySaveUseCase
         private readonly Mock<ICompanyRepositoryRedis> _companyRepositoryMock;
         private readonly Mock<ICompanyRepositoryMongoDb> _companyRepositoryMongoDbMock;
         private readonly Mock<IRabbitService> _rabbitServiceMock;
+        private readonly Mock<IKafkaService> _kafkaService;
         private readonly CompanySaveHandler _companySaveHandler;
         private readonly CancellationToken _cancellationToken;
         private CompanySaveCommand _companySaveCommand;
@@ -30,7 +31,8 @@ namespace Test.UseCases.CompanySaveUseCase
             _companyRepositoryMock = _builderMock.Create<ICompanyRepositoryRedis>();
             _companyRepositoryMongoDbMock = _builderMock.Create<ICompanyRepositoryMongoDb>();
             _rabbitServiceMock = _builderMock.Create<IRabbitService>();
-            _companySaveHandler = new CompanySaveHandler(_rabbitServiceMock.Object, _companyRepositoryMock.Object, _companyRepositoryMongoDbMock.Object);
+            _kafkaService = _builderMock.Create<IKafkaService>();
+            _companySaveHandler = new CompanySaveHandler(_rabbitServiceMock.Object, _companyRepositoryMock.Object, _companyRepositoryMongoDbMock.Object, _kafkaService.Object);
 
             _builder = new Fixture();
             _faker = new Faker("pt_BR");
@@ -46,6 +48,7 @@ namespace Test.UseCases.CompanySaveUseCase
         private void SetupMocks()
         {
             _rabbitServiceMock.Setup(x => x.Post(_companySaveCommand));
+            _kafkaService.Setup(x => x.Produce(_companySaveCommand));
             _companyRepositoryMock.Setup(x => x.Save(It.Is<Company>(x => x.Cnpj == _companySaveCommand.Cnpj)));
             _companyRepositoryMongoDbMock.Setup(x => x.Insert(It.Is<Company>(x => x.Cnpj == _companySaveCommand.Cnpj)));
             _companyRepositoryMongoDbMock.Setup(x => x.QueryByCnpj(_companySaveCommand.Cnpj)).Returns((Company)null);
